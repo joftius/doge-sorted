@@ -1,6 +1,6 @@
 # Checking the `DOGE` website tables
 
-The DOGE [website](https://doge.gov/savings) **wall of receipts** contains the following 'savings' totals:
+The DOGE [website](https://doge.gov/savings) **wall of receipts** contains the following 'savings'[^1] totals:
 
 | Table              | Savings |
 | :----------------- | ------: |
