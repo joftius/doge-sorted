@@ -9,6 +9,7 @@ The DOGE [website](https://doge.gov/savings) **wall of receipts** contains the f
 | Real Estate       | $19.82B |
 
 Estimate claimed by DOGE: **$105B**
+
 Total of receipts: **$19.82B**
 
 The website shows `savings` in several tables, but these do not allow sorting by the amount.
