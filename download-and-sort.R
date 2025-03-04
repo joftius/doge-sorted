@@ -88,9 +88,14 @@ real_estate_table <- tables[[3]] |>
   arrange(desc(Saved))
 
 # Total "saved"
-saved_contracts <- paste0(dollar(round(sum(contracts_table$Saved)/1000000000,1)), "B")
-saved_grants <- paste0(dollar(round(sum(grants_table$Saved)/1000000000,1)), "B")
-saved_realestate <- paste0(dollar(round(sum(real_estate_table$Saved)/1000000000,2)), "B")
+total_contracts <- sum(contracts_table$Saved)
+total_contracts_text <- paste0(dollar(round(total_contracts/1000000000,2)), "B")
+total_grants <- sum(grants_table$Saved)
+total_grants_text <- paste0(dollar(round(total_grants/1000000000,2)), "B")
+total_realestate <- sum(real_estate_table$Saved)
+total_realestate_text <- paste0(dollar(round(total_realestate/1000000000,2)), "B")
+
+total_combined_text <- total_realestate_text <- paste0(dollar(round((total_contracts + total_grants + total_realestate)/1000000000,2)), "B")
 
 # Close browser
 remDr$close()
@@ -115,17 +120,18 @@ fileConn<-file("README.md")
 writeLines(c(
 "# Checking the `DOGE` website tables",
 "",
-paste0("`DOGE` currently claims a total savings of: *", savings_claimed, "*"),
-"",
-"Their `wall of receipts` contains the following totals:",
+"The DOGE [website](https://doge.gov/savings) **wall of receipts** contains the following 'savings' totals:",
 "",
 "| Table              | Savings |",
 "| :----------------- | ------: |",
-paste("| Contracts       |", saved_contracts, "|"),
-paste("| Grants       |", saved_grants, "|"),
-paste("| Real Estate       |", saved_realestate, "|"),
+paste("| Contracts       |", total_contracts_text, "|"),
+paste("| Grants       |", total_grants_text, "|"),
+paste("| Real Estate       |", total_realestate_text, "|"),
 "",
-"Their [website](https://doge.gov/savings) shows `savings` in several tables, but these do not allow sorting by the amount.",
+paste0("Estimate claimed by DOGE: **", savings_claimed, "**"),
+paste0("Total of receipts: **", total_combined_text, "**"),
+"",
+"The website shows `savings` in several tables, but these do not allow sorting by the amount.",
 "",
 "This R script uses the [RSelenium](https://cran.r-project.org/web/packages/RSelenium/index.html) package to navigate a web browser to the site, click several text fields in order to reveal the full tables, and save the results. This allows sorting the data in R and saving it in any desired format.",
 "",
