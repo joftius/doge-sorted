@@ -2,6 +2,11 @@ library(RSelenium)
 library(dplyr)
 library(googlesheets4)
 library(rvest)
+library(scales)
+
+# Start chromedriver
+system("chromedriver --port=4568", wait = FALSE)
+Sys.sleep(1)
 
 # The receipts page
 url <- "https://doge.gov/savings"
@@ -19,6 +24,13 @@ Sys.sleep(4)
 # Note: xpath for each element below can be found in chrome by
 # right-click on the element, inspect, then in the panel showing
 # source right-click again on the text and copy the full xpath
+
+# Find estimate of total savings
+# #main-content > div > div > div.text-center.mb-12 > div.flex.flex-col.md\:flex-row.justify-center.gap-12.my-10 > div:nth-child(1) > div > p.text-6xl.font-bold.text-slate-200
+# savings_estimate <- remDr$findElement(using = "css selector", "#main-content > div > div > div.text-center.mb-12 > div.flex.flex-col.md\:flex-row.justify-center.gap-12.my-10 > div:nth-child(1) > div > p.text-6xl.font-bold.text-slate-200")
+# /html/body/div/main/div/div/div[1]/div[1]/div[1]/div/p[2]
+savings_estimate <- remDr$findElement(using = "xpath", "/html/body/div/main/div/div/div[1]/div[1]/div[1]/div/p[2]")
+savings_claimed <- savings_estimate$getElementText()[[1]]
 
 # Click Savings
 #savings_button <- remDr$findElement(using = "xpath", "/html/body/div/main/div/div/div[4]/div/div[2]/span[2]")
@@ -76,9 +88,9 @@ real_estate_table <- tables[[3]] |>
   arrange(desc(Saved))
 
 # Total "saved"
-sum(contracts_table$Saved)
-sum(grants_table$Saved)
-sum(real_estate_table$Saved)
+saved_contracts <- paste0(dollar(round(sum(contracts_table$Saved)/1000000000,1)), "B")
+saved_grants <- paste0(dollar(round(sum(grants_table$Saved)/1000000000,1)), "B")
+saved_realestate <- paste0(dollar(round(sum(real_estate_table$Saved)/1000000000,2)), "B")
 
 # Close browser
 remDr$close()
@@ -97,4 +109,29 @@ ss <- googledrive::as_id("13n8s4ZHESFeBTgyeFkol1WWaI_Ax5VvJ1gHuYGWXBow")
 sheet_write(contracts_table, ss, sheet = "Contracts")
 sheet_write(grants_table, ss, sheet = "Grants")
 sheet_write(real_estate_table, ss, sheet = "Real Estate")
+
+
+fileConn<-file("README.md")
+writeLines(c(
+"# Checking the `DOGE` website tables",
+"",
+paste0("`DOGE` currently claims a total savings of: *", savings_claimed, "*"),
+"",
+"Their `wall of receipts` contains the following totals:",
+"",
+"| Table              | Savings |",
+"| :----------------- | ------: |",
+paste("| Contracts       |", saved_contracts, "|"),
+paste("| Grants       |", saved_grants, "|"),
+paste("| Real Estate       |", saved_realestate, "|"),
+"",
+"Their [website](https://doge.gov/savings) shows `savings` in several tables, but these do not allow sorting by the amount.",
+"",
+"This R script uses the [RSelenium](https://cran.r-project.org/web/packages/RSelenium/index.html) package to navigate a web browser to the site, click several text fields in order to reveal the full tables, and save the results. This allows sorting the data in R and saving it in any desired format.",
+"",
+"CSV files and this [Google Sheet](https://docs.google.com/spreadsheets/d/13n8s4ZHESFeBTgyeFkol1WWaI_Ax5VvJ1gHuYGWXBow/edit?usp=sharing) both contain results saved after running this on March 4, 2025."
+), fileConn)
+close(fileConn)
+
+
 
