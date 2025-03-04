@@ -117,7 +117,7 @@ sheet_write(real_estate_table, ss, sheet = "Real Estate")
 
 fileConn<-file("README.md")
 writeLines(c(
-"# Checking the `DOGE` website tables",
+"# Checking `DOGE` website data",
 "",
 "The DOGE [website](https://doge.gov/savings) **wall of receipts** contains the following 'savings'[^1] totals:",
 "",
