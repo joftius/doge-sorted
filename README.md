@@ -1,8 +1,8 @@
 # Checking the `DOGE` website tables
 
-The DOGE [website](https://doge.gov/savings) **wall of receipts** contains the following 'savings' totals:
+The DOGE [website](https://doge.gov/savings) **wall of receipts** contains the following 'savings'[^1] totals:
 
-| Table              | Savings |
+| Table              | 'Savings' |
 | :----------------- | ------: |
 | Contracts       | $8.86B |
 | Grants       | $10.30B |
@@ -12,7 +12,7 @@ Estimate claimed by DOGE: **$105B**
 
 Total of receipts: **$19.82B**
 
-The website shows '*savings*'[^1] in several tables, but these do not allow sorting by the amount.
+The website shows 'savings' in several tables, but these do not allow sorting by the amount.
 
 This R script uses the [RSelenium](https://cran.r-project.org/web/packages/RSelenium/index.html) package to navigate a web browser to the site, click several text fields in order to reveal the full tables, and save the results. This allows sorting the data in R and saving it in any desired format.
 
