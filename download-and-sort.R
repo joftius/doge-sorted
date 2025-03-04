@@ -94,7 +94,6 @@ total_grants <- sum(grants_table$Saved)
 total_grants_text <- paste0(dollar(round(total_grants/1000000000,2)), "B")
 total_realestate <- sum(real_estate_table$Saved)
 total_realestate_text <- paste0(dollar(round(total_realestate/1000000000,2)), "B")
-
 total_combined_text <- total_realestate_text <- paste0(dollar(round((total_contracts + total_grants + total_realestate)/1000000000,2)), "B")
 
 # Close browser
@@ -128,14 +127,16 @@ paste("| Contracts       |", total_contracts_text, "|"),
 paste("| Grants       |", total_grants_text, "|"),
 paste("| Real Estate       |", total_realestate_text, "|"),
 "",
-paste0("Estimate claimed by DOGE: **", savings_claimed, "**"),
+paste0("Estimate claimed by DOGE: **", savings_claimed, "**\n"),
 paste0("Total of receipts: **", total_combined_text, "**"),
 "",
-"The website shows `savings` in several tables, but these do not allow sorting by the amount.",
+"The website shows '*savings*'[^1] in several tables, but these do not allow sorting by the amount.",
 "",
 "This R script uses the [RSelenium](https://cran.r-project.org/web/packages/RSelenium/index.html) package to navigate a web browser to the site, click several text fields in order to reveal the full tables, and save the results. This allows sorting the data in R and saving it in any desired format.",
 "",
-paste("CSV files and this [Google Sheet](https://docs.google.com/spreadsheets/d/13n8s4ZHESFeBTgyeFkol1WWaI_Ax5VvJ1gHuYGWXBow/edit?usp=sharing) both contain results saved after running this on", Sys.Date())
+paste("CSV files and this [Google Sheet](https://docs.google.com/spreadsheets/d/13n8s4ZHESFeBTgyeFkol1WWaI_Ax5VvJ1gHuYGWXBow/edit?usp=sharing) both contain results saved after running this on", Sys.Date()),
+"",
+"[^1]: Basic financial literacy: many types of government spending are [investments](https://en.wikipedia.org/wiki/Fiscal_multiplier#United_States) with returns, so a dollar cut is not necessarily a dollar saved."
 ), fileConn)
 close(fileConn)
 
